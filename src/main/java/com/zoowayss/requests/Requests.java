@@ -97,6 +97,42 @@ public class Requests {
                 .execute();
     }
 
+    // 流式POST请求
+    public static Response postStream(String url) throws IOException {
+        return builder(url).method("POST").stream().execute();
+    }
+
+    public static Response postStream(String url, Map<String, String> headers) throws IOException {
+        return builder(url).method("POST").headers(headers).stream().execute();
+    }
+
+    public static Response postStream(String url, Map<String, String> headers, Object data, Object json) throws IOException {
+        return builder(url).method("POST").headers(headers).data(data).json(json).stream().execute();
+    }
+
+    public static Response postStream(String url, Map<String, String> headers, Object data, Object json, ProxyConfig proxy) throws IOException {
+        return builder(url)
+                .method("POST")
+                .headers(headers)
+                .data(data)
+                .json(json)
+                .proxy(proxy)
+                .stream()
+                .execute();
+    }
+
+    public static Response postStream(String url, Map<String, String> headers, Object data, Object json, int connectTimeout, int readTimeout) throws IOException {
+        return builder(url)
+                .method("POST")
+                .headers(headers)
+                .data(data)
+                .json(json)
+                .connectTimeout(connectTimeout)
+                .readTimeout(readTimeout)
+                .stream()
+                .execute();
+    }
+
     // PUT 请求
     public static Response put(String url, Object data) throws IOException {
         return builder(url).method("PUT").data(data).execute();

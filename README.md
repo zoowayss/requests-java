@@ -33,33 +33,41 @@
 
 ```java
 // 基本 GET 请求
-Response response=Requests.builder("https://api.example.com/users")
-        .method("GET")
-        .execute();
+Response response = Requests.builder("https://api.example.com/users")
+    .method("GET")
+    .execute();
 
 // 完整的 POST 请求示例
-        Response response=Requests.builder("https://api.example.com/users")
-        .method("POST")
-        .headers(headers)
-        .json(user)
-        .proxy(proxy)          // 可选的代理设置
-        .connectTimeout(5000)  // 可选的连接超时
-        .readTimeout(30000)    // 可选的读取超时
-        .execute();
+Response response = Requests.builder("https://api.example.com/users")
+    .method("POST")
+    .headers(headers)
+    .json(user)
+    .proxy(proxy)          // 可选的代理设置
+    .connectTimeout(5000)  // 可选的连接超时
+    .readTimeout(30000)    // 可选的读取超时
+    .execute();
 
 // 流式下载示例
-        Response response=Requests.builder("https://example.com/large-file")
-        .method("GET")
-        .stream()             // 启用流式处理
-        .proxy(proxy)         // 可选的代理
-        .execute();
+Response response = Requests.builder("https://example.com/large-file")
+    .method("GET")
+    .stream()             // 启用流式处理
+    .proxy(proxy)         // 可选的代理
+    .execute();
+
+// 流式 POST 请求示例
+Response response = Requests.builder("https://api.example.com/upload")
+    .method("POST")
+    .headers(headers)
+    .json(data)
+    .stream()            // 启用流式处理
+    .execute();
 
 // 灵活的代理配置
-        Response response=Requests.builder("https://api.example.com")
-        .method("GET")
-        .proxy(new ProxyConfig("proxy.example.com",8080)
-        .credentials("username","password"))
-        .execute();
+Response response = Requests.builder("https://api.example.com")
+    .method("GET")
+    .proxy(new ProxyConfig("proxy.example.com", 8080)
+        .credentials("username", "password"))
+    .execute();
 ```
 
 ### 基本 GET 请求
@@ -152,6 +160,37 @@ ProxyConfig proxy=new ProxyConfig("proxy.example.com",8080);
 
 ### 流式处理
 
+#### 流式 POST 请求
+
+```java
+// 基本流式 POST 请求
+Response response = Requests.postStream("https://api.example.com/upload");
+
+// 带请求头的流式 POST 请求
+Response response = Requests.postStream("https://api.example.com/upload", headers);
+
+// 带数据的流式 POST 请求
+Map<String, Object> data = new HashMap<>();
+data.put("name", "test");
+Response response = Requests.postStream("https://api.example.com/upload", headers, data, null);
+
+// 带代理的流式 POST 请求
+Response response = Requests.postStream("https://api.example.com/upload", headers, data, null, proxy);
+
+// 设置超时的流式 POST 请求
+Response response = Requests.postStream("https://api.example.com/upload", headers, data, null, 5000, 30000);
+
+// 处理流式 POST 响应
+try (Response response = Requests.postStream("https://api.example.com/upload", headers, data, null)) {
+    if (response.isOk()) {
+        response.streamLines(line -> {
+            // 处理服务器返回的每一行数据
+            System.out.println("收到响应: " + line);
+        });
+    }
+}
+```
+
 #### 下载大文件
 
 ```java
@@ -227,6 +266,7 @@ try {
 6. 默认连接超时时间为 10 秒，读取超时时间为 30 秒
 7. 超时时间可以全局设置，也可以针对单个请求设置
 8. 推荐使用构建器模式来创建请求，这样可以更灵活地配置请求参数
+9. 流式 POST 请求适用于需要处理大量响应数据的场景
 
 ## 许可证
 
