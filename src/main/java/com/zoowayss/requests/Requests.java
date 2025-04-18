@@ -206,7 +206,7 @@ public class Requests {
         // 设置默认请求头
         conn.setRequestProperty("Accept", "*/*");
         conn.setRequestProperty("Connection", "keep-alive");
-        conn.setRequestProperty("User-Agent", "Java-Requests/1.0.0");
+        conn.setRequestProperty("User-Agent", "Java-Requests");
 
         // 设置自定义请求头
         if (headers != null) {

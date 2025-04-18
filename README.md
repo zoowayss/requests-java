@@ -23,7 +23,7 @@
 <dependency>
     <groupId>io.github.zoowayss</groupId>
     <artifactId>requests-java</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
